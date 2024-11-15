@@ -7,8 +7,7 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    //public string firstLevel;
-    public GameObject levelPopup;
+    public string firstLevel;
     public int startLive = 3, startFruit = 0;
     public GameObject continueButton;
 
@@ -20,6 +19,10 @@ public class MainMenu : MonoBehaviour
         if (PlayerPrefs.HasKey("currentLevel"))
         {
             continueButton.SetActive(true);
+        }
+        else
+        {
+            continueButton.SetActive(false);
         }
     }
 
@@ -39,20 +42,21 @@ public class MainMenu : MonoBehaviour
 #endif
     }
 
-    public void StartGame()
+    public void QuitGame()
     {
+        Application.Quit();
+        Debug.Log("Quit Game");
+    }
+
+    public void NewGame()
+    {
+        //PlayerPrefs.DeleteAll();
         InfoTracker.instance.currentLives = startLive;
         InfoTracker.instance.currentFruits = startFruit;
 
         InfoTracker.instance.SaveInfo();
 
-        levelPopup.SetActive(true);
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-        Debug.Log("Quit Game");
+        SceneManager.LoadScene(firstLevel);
     }
 
     public void Continue()
