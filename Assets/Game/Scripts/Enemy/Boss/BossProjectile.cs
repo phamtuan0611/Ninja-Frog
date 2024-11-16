@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossProjectile : MonoBehaviour
 {
-    public float speed = 8f;
+    public float speed = 12f;
     private Vector3 direction;
     private float lifeTime = 3f;
 
