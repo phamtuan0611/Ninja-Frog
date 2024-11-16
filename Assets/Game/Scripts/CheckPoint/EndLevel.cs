@@ -45,7 +45,10 @@ public class EndLevel : MonoBehaviour
         InfoTracker.instance.GetInfo();
         InfoTracker.instance.SaveInfo();
 
-        PlayerPrefs.SetString("currentLevel", nextLevel);
+        if (nextLevel != "Finish")
+        {
+            PlayerPrefs.SetString("currentLevel", nextLevel);
+        }
 
         SceneManager.LoadScene(nextLevel);
     }
