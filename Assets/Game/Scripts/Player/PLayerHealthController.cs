@@ -47,14 +47,15 @@ public class PLayerHealthController : MonoBehaviour
             }
         }
 
-//Chi khi dang dung Unity thi moi thuc hien. Con khi phat hanh Game thi khong
+        //Chi khi dang dung Unity thi moi thuc hien. Con khi phat hanh Game thi khong
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Z))
         {
             AddHealth(1);
         }
-    }
 #endif
+    }
+
 
     public void DamagePLayer()
     {
@@ -88,7 +89,7 @@ public class PLayerHealthController : MonoBehaviour
     public void AddHealth(int amountToAdd)
     {
         currentHealth += amountToAdd;
-        
+
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;

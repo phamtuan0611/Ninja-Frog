@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,12 +23,36 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float knockbackLength, knockbackSpeed;
     private float knockbackCounter;
 
+    public Button left, right;
+    private bool moveLeft, moveRight;
+    private float horizontalMove;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        moveLeft = false;
+        moveRight = false;
     }
 
+    public void PointerDownLeft()
+    {
+        moveLeft = true;
+    }
+
+    public void PointerUpLeft()
+    {
+        moveLeft = false;
+    }
+
+    public void PointerDownRight()
+    {
+        moveRight = true;
+    }
+
+    public void PointerUpRight()
+    {
+        moveRight = false;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -44,8 +70,11 @@ public class PlayerController : MonoBehaviour
                     activeSpeed = runSpeed;
                 }
 
-                theRB.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * activeSpeed, theRB.velocity.y);
+                //Di chuyen bang ban phim
+                //theRB.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * activeSpeed, theRB.velocity.y);
 
+                MovePlayer();
+               
                 // Input.GetButtomDown("Jump") == Phim Space
                 if (Input.GetButtonDown("Jump"))
                 {
@@ -82,10 +111,19 @@ public class PlayerController : MonoBehaviour
             }
 
             //Handel Animation
+            //anim.SetFloat("speed", Mathf.Abs(theRB.velocity.x));
             anim.SetFloat("speed", Mathf.Abs(theRB.velocity.x));
             anim.SetBool("isGrounded", isGrounded);
             anim.SetFloat("ySpeed", theRB.velocity.y);
         }
+    }
+
+    private void FixedUpdate()
+    {
+        theRB.velocity = new Vector2(horizontalMove, theRB.velocity.y);
+        //anim.SetFloat("speed", Mathf.Abs(transform.position.x));
+        //anim.SetBool("isGrounded", isGrounded);
+        //anim.SetFloat("ySpeed", theRB.velocity.y);
     }
 
     public void Jump()
@@ -108,5 +146,38 @@ public class PlayerController : MonoBehaviour
         canDoubleJump = true;
 
         anim.SetBool("isGrounded", true);
+    }
+
+    private void MovePlayer()
+    {
+        if (moveLeft)
+        {
+            horizontalMove = -activeSpeed;
+        }
+        else if (moveRight)
+        {
+            horizontalMove = activeSpeed;
+        }
+        else
+        {
+            horizontalMove = 0f;
+        }
+    }
+
+    public void PlayerJump()
+    {
+        if (isGrounded == true)
+        {
+            Jump();
+            canDoubleJump = true;
+            anim.SetBool("isDoubleJumping", false);
+        }
+        else if (canDoubleJump == true)
+        {
+            Jump();
+            canDoubleJump = false;
+            //anim.SetBool("isDoubleJumping", true);
+            anim.SetTrigger("isDoubleJump");
+        }
     }
 }
