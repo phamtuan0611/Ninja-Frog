@@ -20,7 +20,6 @@ public class BlueBirdController : MonoBehaviour
     {
         if (isAttack == true)
         {
-            Debug.Log("Blue Bird is coming");
             blueBrid.transform.position = Vector3.MoveTowards(blueBrid.transform.position, thePlayer.transform.position, speed * Time.deltaTime);
             if (blueBrid.transform.position.x > patrolPoint.transform.position.x)
             {
@@ -33,7 +32,6 @@ public class BlueBirdController : MonoBehaviour
 
         if (isAttack == false)
         {
-            Debug.Log("Blue Bird is leaving");
             blueBrid.transform.position = Vector3.MoveTowards(blueBrid.transform.position, patrolPoint.transform.position, speed * Time.deltaTime);
             if (blueBrid.transform.position.x > patrolPoint.transform.position.x)
             {
@@ -51,7 +49,6 @@ public class BlueBirdController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isAttack = true;
-            Debug.Log("Player in");
         }
     }
 
@@ -60,7 +57,6 @@ public class BlueBirdController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isAttack = false;
-            Debug.Log("Player out");
         }
     }
 }

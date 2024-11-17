@@ -25,9 +25,11 @@ public class BossBattleController : MonoBehaviour
     public Transform[] projectileMiniBoss;
 
     public float waitToStartShooting, timeBetweenShots;
-    private float shootStartCounter, shotCounter, shootCounterMini;
+    private float shootStartCounter, shotCounter;
     private int currentShoot;
+
     private int currentShootMiniBoss;
+    private float shootCounterMini;
 
     public Animator bossAnim;
     private bool isWeak;
@@ -39,6 +41,8 @@ public class BossBattleController : MonoBehaviour
     private int currentPhase;
 
     public GameObject deathEffect, blueBird;
+    private float timeWaitBird = 0.75f;
+    private bool blueBirdSpawned;
 
     public Transform[] theTraps, theHealths;
     public GameObject player;
@@ -123,15 +127,11 @@ public class BossBattleController : MonoBehaviour
 
                 if (currentPhase == 3)
                 {
-                    if (shootCounterMini > 0f)
+                    shootCounterMini -= Time.deltaTime;
+                    if (shootCounterMini <= 0f)
                     {
-                        shootCounterMini -= Time.deltaTime;
-
-                        if (shootCounterMini <= 0f)
-                        {
-                            shootCounterMini = timeBetweenShots;
-                            miniBossFire();
-                        }
+                        shootCounterMini = timeBetweenShots;
+                        miniBossFire();
                     }
                 }
             }
@@ -148,6 +148,21 @@ public class BossBattleController : MonoBehaviour
                     {
                         currentMovePoint = 0;
                     }
+                }
+            }
+
+            if (isWeak == true && blueBirdSpawned == false)
+            {
+                timeWaitBird -= Time.deltaTime;
+                if (timeWaitBird <= 0)
+                {
+                    blueBirdSpawned = true;
+                    GameObject bird = Instantiate(blueBird, new Vector3(14.2f, 3f, 0f), Quaternion.identity);
+                    if (bird != null)
+                    {
+                        bird.GetComponentInChildren<BlueBirdController>().thePlayer = player;
+                    }
+                    timeWaitBird = 1.5f;
                 }
             }
         }
@@ -185,21 +200,21 @@ public class BossBattleController : MonoBehaviour
         projectileMiniBoss[currentShootMiniBoss].gameObject.SetActive(false);
         currentShootMiniBoss++;
 
-        //if (currentShootMiniBoss >= projectileMiniBoss.Length / 2)
-        //{
-        //    shotCounter = 0f;
-        //}
+        if (currentShootMiniBoss >= projectileMiniBoss.Length)
+        {
+            shootCounterMini = 0f;
+        }
     }
 
     void MakeWeak()
     {
         bossAnim.SetTrigger("isWeak");
         isWeak = true;
-
-        GameObject bird = Instantiate(blueBird, new Vector3(14.2f, 3f, 0f), Quaternion.identity);
-        if (bird != null)
+        Debug.Log(currentPhase);
+        if (currentPhase == 3)
         {
-            bird.GetComponentInChildren<BlueBirdController>().thePlayer = player;
+            Debug.Log("miniBoss");
+            bossMiniDisable();
         }
     }
 
@@ -217,9 +232,21 @@ public class BossBattleController : MonoBehaviour
                 {
                     bossAnim.SetTrigger("Hit");
                     FindAnyObjectByType<PlayerController>().Jump();
+                    blueBirdSpawned = false;
+
                     MoveToNextPhase();
                 }
             }
+        }
+    }
+
+    void bossMiniDisable()
+    {
+        Debug.Log("Mini Boss destroy");
+        foreach (Transform bm in miniBoss)
+        {
+            bm.localScale = Vector3.MoveTowards(bm.localScale, Vector3.zero, bossGrowSpeed * Time.deltaTime);
+            bm.gameObject.SetActive(false);
         }
     }
 
@@ -254,8 +281,6 @@ public class BossBattleController : MonoBehaviour
             //timeBetweenShots *= 0.75f;
             //bossMoveSpeed *= 1.5f;
 
-
-
             shootStartCounter = waitToStartShooting;
 
             projectileLauncher.localScale = Vector3.zero;
@@ -269,7 +294,7 @@ public class BossBattleController : MonoBehaviour
 
             AudioManager.instance.allSFXPlay(1);
 
-            Debug.Log("Mang 4");
+            Debug.Log("Mang 3");
         }
         else if (currentPhase >= 0)
         {
@@ -292,46 +317,5 @@ public class BossBattleController : MonoBehaviour
 
             AudioManager.instance.allSFXPlay(1);
         }
-
-        //if (currentPhase < 5)
-        //{
-        //    isWeak = false;
-
-        //    waitToStartShooting *= 0.5f;
-        //    timeBetweenShots *= 0.75f;
-        //    bossMoveSpeed *= 1.5f;
-
-        //    shootStartCounter = waitToStartShooting;
-
-        //    projectileLauncher.localScale = Vector3.zero;
-
-        //    foreach (Transform point in projectilePoints)
-        //    {
-        //        point.gameObject.SetActive(true);
-        //    }
-
-        //    currentShoot = 0;
-
-        //    AudioManager.instance.allSFXPlay(1);
-        //}
-        //else
-        //{
-        //    gameObject.SetActive(false);
-
-        //    foreach(Transform tt in theTraps)
-        //    {
-        //        tt.gameObject.SetActive(false);
-        //    }
-
-        //    blockers.SetActive(false);
-
-        //    camController.enabled = true;
-
-        //    Instantiate(deathEffect, theBoss.position, Quaternion.identity);
-
-        //    AudioManager.instance.allSFXPlay(0);
-
-        //    AudioManager.instance.levelTracksPlay(FindFirstObjectByType<LevelMusicPlayer>().trackToPlay);
-        //}
     }
 }
