@@ -22,10 +22,12 @@ public class BossBattleController : MonoBehaviour
 
     public GameObject projectileToFire;
     public Transform[] projectilePoints;
+    public Transform[] projectileMiniBoss;
 
     public float waitToStartShooting, timeBetweenShots;
-    private float shootStartCounter, shotCounter;
+    private float shootStartCounter, shotCounter, shootCounterMini;
     private int currentShoot;
+    private int currentShootMiniBoss;
 
     public Animator bossAnim;
     private bool isWeak;
@@ -36,7 +38,12 @@ public class BossBattleController : MonoBehaviour
 
     private int currentPhase;
 
-    public GameObject deathEffect;
+    public GameObject deathEffect, blueBird;
+
+    public Transform[] theTraps, theHealths;
+    public GameObject player;
+
+    public Transform[] miniBoss;
 
     // Start is called before the first frame update
     void Start()
@@ -57,11 +64,33 @@ public class BossBattleController : MonoBehaviour
 
             if (theBoss.localScale != Vector3.one)
             {
+                //Hien Boss
                 theBoss.localScale = Vector3.MoveTowards(theBoss.localScale, Vector3.one, bossGrowSpeed * Time.deltaTime);
+
+                //Hien Traps
+                foreach (Transform tt in theTraps)
+                {
+                    tt.gameObject.SetActive(true);
+                }
+
+                foreach (Transform th in theHealths)
+                {
+                    th.gameObject.SetActive(true);
+                }
+            }
+
+            if (currentPhase == 3)
+            {
+                foreach (Transform bm in miniBoss)
+                {
+                    bm.gameObject.SetActive(true);
+                    bm.localScale = Vector3.MoveTowards(bm.localScale, Vector3.one, bossGrowSpeed * Time.deltaTime);
+                }
             }
 
             if (theBoss.localScale == Vector3.one && projectileLauncher.localScale != Vector3.one)
             {
+                //Hien Dan 
                 projectileLauncher.localScale = Vector3.MoveTowards(projectileLauncher.localScale, Vector3.one, bossGrowSpeed * Time.deltaTime);
             }
 
@@ -84,15 +113,30 @@ public class BossBattleController : MonoBehaviour
             if (shotCounter > 0f)
             {
                 shotCounter -= Time.deltaTime;
-                if(shotCounter <= 0f)
+
+                if (shotCounter <= 0f)
                 {
                     shotCounter = timeBetweenShots;
 
                     FireShoot();
                 }
+
+                if (currentPhase == 3)
+                {
+                    if (shootCounterMini > 0f)
+                    {
+                        shootCounterMini -= Time.deltaTime;
+
+                        if (shootCounterMini <= 0f)
+                        {
+                            shootCounterMini = timeBetweenShots;
+                            miniBossFire();
+                        }
+                    }
+                }
             }
 
-            if (isWeak == false)
+            if (isWeak == false && shootStartCounter <= 1f)
             {
                 theBoss.transform.position = Vector3.MoveTowards(theBoss.transform.position, bossMovePoints[currentMovePoint].position, bossMoveSpeed * Time.deltaTime);
 
@@ -134,10 +178,29 @@ public class BossBattleController : MonoBehaviour
         AudioManager.instance.allSFXPlay(2);
     }
 
+    void miniBossFire()
+    {
+        Instantiate(projectileToFire, projectileMiniBoss[currentShootMiniBoss].position, projectileMiniBoss[currentShootMiniBoss].rotation);
+
+        projectileMiniBoss[currentShootMiniBoss].gameObject.SetActive(false);
+        currentShootMiniBoss++;
+
+        //if (currentShootMiniBoss >= projectileMiniBoss.Length / 2)
+        //{
+        //    shotCounter = 0f;
+        //}
+    }
+
     void MakeWeak()
     {
         bossAnim.SetTrigger("isWeak");
         isWeak = true;
+
+        GameObject bird = Instantiate(blueBird, new Vector3(14.2f, 3f, 0f), Quaternion.identity);
+        if (bird != null)
+        {
+            bird.GetComponentInChildren<BlueBirdController>().thePlayer = player;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -164,7 +227,51 @@ public class BossBattleController : MonoBehaviour
     {
         currentPhase++;
 
-        if (currentPhase < 3)
+        if (currentPhase >= 4)
+        {
+            gameObject.SetActive(false);
+
+            foreach (Transform tt in theTraps)
+            {
+                tt.gameObject.SetActive(false);
+            }
+
+            blockers.SetActive(false);
+
+            camController.enabled = true;
+
+            Instantiate(deathEffect, theBoss.position, Quaternion.identity);
+
+            AudioManager.instance.allSFXPlay(0);
+
+            AudioManager.instance.levelTracksPlay(FindFirstObjectByType<LevelMusicPlayer>().trackToPlay);
+        }
+        else if (currentPhase >= 2)
+        {
+            isWeak = false;
+
+            //waitToStartShooting *= 0.5f;
+            //timeBetweenShots *= 0.75f;
+            //bossMoveSpeed *= 1.5f;
+
+
+
+            shootStartCounter = waitToStartShooting;
+
+            projectileLauncher.localScale = Vector3.zero;
+
+            foreach (Transform point in projectilePoints)
+            {
+                point.gameObject.SetActive(true);
+            }
+
+            currentShoot = 0;
+
+            AudioManager.instance.allSFXPlay(1);
+
+            Debug.Log("Mang 4");
+        }
+        else if (currentPhase >= 0)
         {
             isWeak = false;
 
@@ -185,18 +292,46 @@ public class BossBattleController : MonoBehaviour
 
             AudioManager.instance.allSFXPlay(1);
         }
-        else
-        {
-            gameObject.SetActive(false);
-            blockers.SetActive(false);
 
-            camController.enabled = true;
+        //if (currentPhase < 5)
+        //{
+        //    isWeak = false;
 
-            Instantiate(deathEffect, theBoss.position, Quaternion.identity);
+        //    waitToStartShooting *= 0.5f;
+        //    timeBetweenShots *= 0.75f;
+        //    bossMoveSpeed *= 1.5f;
 
-            AudioManager.instance.allSFXPlay(0);
+        //    shootStartCounter = waitToStartShooting;
 
-            AudioManager.instance.levelTracksPlay(FindFirstObjectByType<LevelMusicPlayer>().trackToPlay);
-        }
+        //    projectileLauncher.localScale = Vector3.zero;
+
+        //    foreach (Transform point in projectilePoints)
+        //    {
+        //        point.gameObject.SetActive(true);
+        //    }
+
+        //    currentShoot = 0;
+
+        //    AudioManager.instance.allSFXPlay(1);
+        //}
+        //else
+        //{
+        //    gameObject.SetActive(false);
+
+        //    foreach(Transform tt in theTraps)
+        //    {
+        //        tt.gameObject.SetActive(false);
+        //    }
+
+        //    blockers.SetActive(false);
+
+        //    camController.enabled = true;
+
+        //    Instantiate(deathEffect, theBoss.position, Quaternion.identity);
+
+        //    AudioManager.instance.allSFXPlay(0);
+
+        //    AudioManager.instance.levelTracksPlay(FindFirstObjectByType<LevelMusicPlayer>().trackToPlay);
+        //}
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BlueBirdController : MonoBehaviour
 {
     [SerializeField] private bool isAttack;
-    [SerializeField] private GameObject blueBrid, thePlayer, patrolPoint;
+    [SerializeField] public GameObject blueBrid, thePlayer, patrolPoint;
     [SerializeField] private float speed = 5f;
 
     // Start is called before the first frame update
