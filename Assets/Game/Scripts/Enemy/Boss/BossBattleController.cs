@@ -91,8 +91,8 @@ public class BossBattleController : MonoBehaviour
                     bm.localScale = Vector3.MoveTowards(bm.localScale, Vector3.one, bossGrowSpeed * Time.deltaTime);
                 }
             }
-
-            if (theBoss.localScale == Vector3.one && projectileLauncher.localScale != Vector3.one)
+            //theBoss.localScale == Vector3.one && 
+            if (projectileLauncher.localScale != Vector3.one)
             {
                 //Hien Dan 
                 projectileLauncher.localScale = Vector3.MoveTowards(projectileLauncher.localScale, Vector3.one, bossGrowSpeed * Time.deltaTime);
@@ -165,6 +165,12 @@ public class BossBattleController : MonoBehaviour
                     timeWaitBird = 1.5f;
                 }
             }
+
+            if (isWeak == true && currentPhase == 3)
+            {
+                Debug.Log("miniBoss");
+                bossMiniDisable();
+            }
         }
     }
     public void AcitvateBattle()
@@ -211,11 +217,6 @@ public class BossBattleController : MonoBehaviour
         bossAnim.SetTrigger("isWeak");
         isWeak = true;
         Debug.Log(currentPhase);
-        if (currentPhase == 3)
-        {
-            Debug.Log("miniBoss");
-            bossMiniDisable();
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)

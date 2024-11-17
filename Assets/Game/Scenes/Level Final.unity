@@ -3249,7 +3249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 980053227694241220, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1551319962291899877, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
       propertyPath: m_IsActive
@@ -3303,6 +3303,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3740480191219040203, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3740480191219040203, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3740480191219040203, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3740480191219040203, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4294692263554875542, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3339,6 +3355,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6901816531279222887, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_text
+      value: LEVEL Final
+      objectReference: {fileID: 0}
+    - target: {fileID: 6901816531279222887, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_fontSize
+      value: 250.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7011808225775720839, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
       propertyPath: m_LocalPosition.x
       value: -37.42
@@ -3374,6 +3398,10 @@ PrefabInstance:
     - target: {fileID: 8856906560649804328, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9194684539981647693, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3452,11 +3480,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockers: {fileID: 1375452622}
   camPoint: {fileID: 1571996543}
-  cameraMoveSpeed: 4
+  cameraMoveSpeed: 2
   theBoss: {fileID: 680995755}
   bossGrowSpeed: 2
   projectileLauncher: {fileID: 1010784085}
-  launcherSpeed: 2
+  launcherSpeed: 1
   laucncherRotateSpeed: 90
   projectileToFire: {fileID: 2090557583792033175, guid: 506e3f2356c1acc4c82684a2dec6dbc9, type: 3}
   projectilePoints:

@@ -6693,6 +6693,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ---LevelPack---
       objectReference: {fileID: 0}
+    - target: {fileID: 7442138543301295313, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+      propertyPath: waitScreen
+      value: 
+      objectReference: {fileID: 1522772971}
     - target: {fileID: 8831083856630473090, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
       propertyPath: m_LocalPosition.x
       value: 65
@@ -6703,6 +6707,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+--- !u!1 &1522772971 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9194684539981647693, guid: 0ecbf1fefddb0504ba6c550c77b2ec62, type: 3}
+  m_PrefabInstance: {fileID: 1522772970}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1776456921
 PrefabInstance:
   m_ObjectHideFlags: 0

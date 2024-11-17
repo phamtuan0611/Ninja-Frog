@@ -27,11 +27,13 @@ public class UIController : MonoBehaviour
     [SerializeField] private Image fadeScreen;
     [SerializeField] private float fadeSpeed;
     [SerializeField] private bool fadingToBlack, fadingFromBlack;
+    [SerializeField] private GameObject waitScreen;
  
     // Start is called before the first frame update
     void Start()
     {
         FadeFromBlack();
+        StartCoroutine(WaitScreen());   
     }
 
     // Update is called once per frame
@@ -150,5 +152,13 @@ public class UIController : MonoBehaviour
     {
         fadingToBlack=true;
         fadingFromBlack=false;
+    }
+
+    private IEnumerator WaitScreen()
+    {
+        yield return new WaitForSeconds(0.2f);
+        waitScreen.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        waitScreen.SetActive(false);
     }
 }
