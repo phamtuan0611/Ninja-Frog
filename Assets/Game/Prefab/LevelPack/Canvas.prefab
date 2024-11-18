@@ -167,7 +167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7395631641662033251
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1233,9 +1233,9 @@ RectTransform:
   - {fileID: 5551265509054875861}
   - {fileID: 3729515981950569218}
   - {fileID: 6812473435726665683}
-  - {fileID: 7395631641662033251}
   - {fileID: 6028814200086180207}
   - {fileID: 557679397795445655}
+  - {fileID: 7395631641662033251}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1338,6 +1338,7 @@ MonoBehaviour:
   fadeSpeed: 2
   fadingToBlack: 0
   fadingFromBlack: 0
+  waitScreen: {fileID: 0}
 --- !u!1 &8176106462818937873
 GameObject:
   m_ObjectHideFlags: 0
